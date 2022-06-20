@@ -80,6 +80,7 @@ public class PigeonHole {
 		frame = new JFrame();
 		frame.setBounds(POS_X, POS_Y, WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("Pigeon Hole");
 		frame.getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT, 8, 8));
 	}
 

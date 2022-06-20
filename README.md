@@ -41,7 +41,7 @@ Select your target folder, then select the tool for the job.
 ### **Analyse**
 - `LEFT` / `RIGHT` arrow keys: move forward and back within the current cluster of images
 - `SHIFT` + `LEFT` / `RIGHT`: move forward or back to the next cluster
-- `ESC` - Stop and exit
+- `Esc` - Stop and exit
 
 ----
 ### Requirements for compilation

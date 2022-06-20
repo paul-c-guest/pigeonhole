@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 
 /**
@@ -69,7 +70,7 @@ public class Filter {
 		}
 
 		// start filtering in the current command line directory
-		new Filter(null);
+		new Filter(Path.of("images"));
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class Filter {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setUndecorated(true);
 		frame.getContentPane().setBackground(Color.BLACK);
-		frame.setTitle("Image Filter");
+		frame.setTitle("Pigeon Hole - Filter");
 		device.setFullScreenWindow(frame);
 
 		BufferedImage nullCursorImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -205,8 +206,12 @@ public class Filter {
 				}
 			}
 
-			if (requestedToExit) {
+			if (requestedToExit && JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...",
+					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+				// break out of the loop to initiate disposal of the jframe
 				break;
+			} else {
+				requestedToExit = false;
 			}
 
 			index++;
@@ -306,7 +311,7 @@ public class Filter {
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				frame.setExtendedState(JFrame.ICONIFIED);
+				frame.setExtendedState(JFrame.NORMAL);
 				device.setFullScreenWindow(null);
 			}
 

@@ -1,4 +1,5 @@
 package backend;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -25,6 +26,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
@@ -32,7 +34,7 @@ import javax.swing.border.LineBorder;
 import backend.util.ClusteredList;
 
 public class Analyse {
-	
+
 	private static Path PATH;
 
 	private JFrame frame;
@@ -48,26 +50,19 @@ public class Analyse {
 	private static int SCREEN_HEIGHT;
 
 	private static final int CURSOR_SHOW_TIME_MS = 750;
-	
+
 	private static final Font INFOBOX_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 18);
 	private static final LineBorder INFOBOX_BORDER = new LineBorder(Color.BLACK, 8);
 	private static FlowLayout DEFAULT_LAYOUT = new FlowLayout(FlowLayout.CENTER);
 
+	public static void main(String[] args) {
+		new Analyse(Path.of("images"));
+	}
+
 	public Analyse(Path path) {
 		PATH = path;
-		
-		clusters = new ClusteredList(new File(PATH.toUri()).listFiles());
 
-		// TODO remove legacy code when safe
-//		// test typical folder name first
-//		if (new File("./Parakeets").exists()) {
-//			clusters = new ClusteredList(new File("./Parakeets").listFiles());
-//		}
-//
-//		// look in root execution folder for images
-//		if (clusters == null) {
-//			clusters = new ClusteredList(new File(".").listFiles());
-//		}
+		clusters = new ClusteredList(new File(PATH.toUri()).listFiles());
 
 		// exit if nothing found
 		if (clusters.size() == 0) {
@@ -78,7 +73,7 @@ public class Analyse {
 		// set up initial cluster
 		cluster = clusters.getNext();
 		clusterData = clusters.getClusterData();
-		
+
 		// tighten up default vertical gap for displayed Components
 		DEFAULT_LAYOUT.setVgap(0);
 
@@ -118,7 +113,7 @@ public class Analyse {
 	private void changeImage() {
 		try {
 			BufferedImage buffered = ImageIO.read(cluster.get(index).getFile());
-			
+
 			int imageWidth = buffered.getWidth();
 			int imageHeight = buffered.getHeight();
 
@@ -175,7 +170,7 @@ public class Analyse {
 
 		frame.setUndecorated(true);
 		frame.getContentPane().setBackground(Color.BLACK);
-		frame.setTitle("Pigeon Holes");
+		frame.setTitle("Pigeon Hole - Analysis");
 
 		// set up mouse cursor to show briefly on movement
 		frame.addMouseMotionListener(getMouseListener());
@@ -239,8 +234,9 @@ public class Analyse {
 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				frame.setExtendedState(JFrame.ICONIFIED);
 				device.setFullScreenWindow(null);
+				frame.setExtendedState(JFrame.NORMAL);
+//				frame.setExtendedState(JFrame.ICONIFIED);
 			}
 
 			@Override
@@ -285,8 +281,11 @@ public class Analyse {
 			this.getActionMap().put(ESCAPE, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
 //					System.out.println("> escape");
-					frame.setVisible(false);
-					frame.dispose();
+					if (JOptionPane.showConfirmDialog(frame, "Exit the analysis window?", "Exit...",
+							JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+						frame.setVisible(false);
+						frame.dispose();
+					} // else do nothing
 				}
 			});
 
