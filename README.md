@@ -39,8 +39,9 @@ Select your target folder, then select the tool for the job.
 - `Esc` - Stop and exit 
 
 ### **Analyse**
-- `LEFT` / `RIGHT` arrow keys: move forward and back within the current cluster of images
-- `SHIFT` + `LEFT` / `RIGHT`: move forward or back to the next cluster
+- `LEFT` / `RIGHT` arrow keys - move forward and back within the current cluster of images
+- `SHIFT` + `LEFT` / `RIGHT` - move forward or back to the next cluster
+- `G` - Go to a particular cluser of photos
 - `Esc` - Stop and exit
 
 ----
