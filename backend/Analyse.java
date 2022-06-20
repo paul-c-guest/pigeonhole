@@ -28,10 +28,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.LineBorder;
 
 import backend.util.ClusteredList;
+import backend.util.Tool;
 
 public class Analyse {
 
@@ -150,7 +153,7 @@ public class Analyse {
 	}
 
 	private String getImageData() {
-		return "[ image " + (index + 1) + " of " + (cluster.size()) + " ] ";
+		return "[ image " + (index + 1) + " / " + (cluster.size()) + " ] ";
 	}
 
 	private void setupEnvironment() {
@@ -254,6 +257,7 @@ public class Analyse {
 		private final int PREVIOUS = KeyEvent.VK_LEFT;
 		private final String NEXT_CLUSTER = "next_cluster";
 		private final String PREVIOUS_CLUSTER = "previous_cluster";
+		private final int GO_TO_CLUSTER = KeyEvent.VK_G;
 
 		public Bindings() {
 			setupInputMap();
@@ -268,6 +272,7 @@ public class Analyse {
 			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), NEXT);
 			this.getInputMap().put(KeyStroke.getKeyStroke(PREVIOUS, 0), PREVIOUS);
 			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0), PREVIOUS);
+			this.getInputMap().put(KeyStroke.getKeyStroke(GO_TO_CLUSTER, 0), GO_TO_CLUSTER);
 
 			// keystrokes with shift key
 			this.getInputMap().put(KeyStroke.getKeyStroke(NEXT, KeyEvent.SHIFT_DOWN_MASK), NEXT_CLUSTER);
@@ -278,6 +283,7 @@ public class Analyse {
 
 		@SuppressWarnings("serial")
 		private void setupActionMap() {
+
 			this.getActionMap().put(ESCAPE, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
 //					System.out.println("> escape");
@@ -319,9 +325,28 @@ public class Analyse {
 					cluster = clusters.getPrevious();
 					clusterData = clusters.getClusterData();
 					index = -1;
-					showPrevious();
+					showNext();
 				}
 			});
+
+			this.getActionMap().put(GO_TO_CLUSTER, new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					String userInput = JOptionPane.showInputDialog(frame, "Go to session: ");
+					Integer number = null;
+					
+					try {
+						number = Integer.parseInt(Tool.getNumberFromString(userInput));
+						cluster = clusters.getClusterAtIndex(number);
+						clusterData = clusters.getClusterData();
+						index = -1;
+						showNext();
+						
+					} catch (NumberFormatException nfe) {
+						JOptionPane.showMessageDialog(frame, "Can't get to session number: " + userInput);
+					}
+				}
+			});
+			
 		}
 	}
 }

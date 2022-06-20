@@ -90,11 +90,19 @@ public class ClusteredList {
 	public List<ClusteredFile> getPrevious() {
 		return fileClusters.get(previous());
 	}
-
-	public int size() {
-		return fileClusters.size();
+	
+	public List<ClusteredFile> getClusterAtIndex(int position) {
+		return fileClusters.get(jumpTo(position));
 	}
 
+	public final int size() {
+		return fileClusters.size();
+	}
+	
+	public final int position() {
+		return position + 1;
+	}
+	
 	private int next() {
 		if (position == null) {
 			position = 0;
@@ -115,7 +123,15 @@ public class ClusteredList {
 		position = (position - 1) % size();
 		return position;
 	}
-
+	
+	private int jumpTo(int index) {
+		if (index > fileClusters.size()) index = fileClusters.size();
+		index -= 1;
+		if (index < 0) index = 0;
+		position = index;
+		return index;
+	}
+	
 	public void printStructure() {
 		for (List<ClusteredFile> cluster : fileClusters) {
 			for (ClusteredFile file : cluster) {
@@ -127,25 +143,31 @@ public class ClusteredList {
 
 	public String getClusterData() {
 		List<ClusteredFile> cluster = fileClusters.get(position);
-		String firstNumber = getNumberFromString(cluster.get(0).file.getName());
-		String firstTime = processTime(cluster.get(0).time.toString());
+		String firstNumber = Tool.getNumberFromString(cluster.get(0).file.getName());
+		String lastNumber = Tool.getNumberFromString(cluster.get(cluster.size() - 1).file.getName()); 
+		String firstTime = Tool.processTime(cluster.get(0).time.toString());
+		String lastTime = Tool.processTime(cluster.get(cluster.size() - 1).time.toString());
 
-		StringBuilder sb = cluster.size() == 1 ? new StringBuilder().append("[ " + firstNumber + " at " + firstTime + " ]")
-				: new StringBuilder().append("[ first image ").append(firstNumber).append(" at ").append(firstTime)
-						.append(" ] [ last image ").append(getNumberFromString(cluster.get(cluster.size() - 1).file.getName()))
-						.append(" at ").append(processTime(cluster.get(cluster.size() - 1).time.toString())).append(" ]");
+		// @formatter:off
+		StringBuilder sb = cluster.size() == 1 
+				? new StringBuilder("[ activity at " + firstTime + " ] [ image " + firstNumber + " ]")
+				: new StringBuilder()
+				.append("[ activity from ")
+				.append(firstTime)
+				.append(" to ")
+				.append(lastTime)
+				.append(" ] [ images ")
+				.append(firstNumber)
+				.append(" to ")
+				.append(lastNumber)
+				.append(" ]");
+		// @formatter:on
+		
+		sb.append(" [ session " + (position + 1) + " / " + fileClusters.size() + " ]");
 
 		return sb.toString();
 	}
-
-	private String getNumberFromString(String name) {
-		return name.replaceAll("[^0-9]+", "");
-	}
-
-	private String processTime(String time) {
-		return time.substring(11, 16);
-	}
-
+	
 	public class ClusteredFile implements Comparable<ClusteredFile> {
 		private File file;
 		private Instant time;
