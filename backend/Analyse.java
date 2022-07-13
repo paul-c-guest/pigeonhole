@@ -58,6 +58,7 @@ public class Analyse {
 	private static final LineBorder INFOBOX_BORDER = new LineBorder(Color.BLACK, 8);
 	private static FlowLayout DEFAULT_LAYOUT = new FlowLayout(FlowLayout.CENTER);
 
+	// for testing
 	public static void main(String[] args) {
 		new Analyse(Path.of("images"));
 	}
@@ -249,6 +250,7 @@ public class Analyse {
 		};
 	}
 
+	// a single object to instantiate and attach to main jframe, to handle keystrokes
 	private class Bindings extends JPanel {
 
 		private static final long serialVersionUID = 1L;
