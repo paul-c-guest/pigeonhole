@@ -32,16 +32,17 @@ Select your target folder, then select the tool for the job.
 ### **Filter**
 - `P` - Parakeet
 - `B` - Bird
-- `E` - Empty / Nothing
-- `M` - Mammal / Non-bird
+- `E` - Empty (Nothing)
+- `M` - Mammal
 - `F` - Foggy 
-- `O` - Other / Human
-- `Esc` - Stop and exit 
+- `O` - Other (Human)
+- `BACKSPACE` - Undo last move (only **one** step back is available)
+- `ESC` - Stop and exit 
 
 ### **Analyse**
 - `LEFT` / `RIGHT` arrow keys - move forward and back within the current cluster of images
 - `SHIFT` + `LEFT` / `RIGHT` - move forward or back to the next cluster
-- `G` - Go to a particular cluser of photos
+- `G` - Go to a cluster number
 - `Esc` - Stop and exit
 
 ----
