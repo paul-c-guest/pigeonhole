@@ -240,7 +240,7 @@ public class Filter {
 		try {
 			String leadingPath = PATH != null ? PATH.toString() : ".";
 
-			// Path.of implemented after JRE 1.8
+			// Path.of implemented after JRE 1.8: using Paths.get over Path.of
 //			Path moveToPath = Path.of(leadingPath, newDirectory, file.getName());
 			Path moveToPath = Paths.get(leadingPath, newDirectory, file.getName());
 
