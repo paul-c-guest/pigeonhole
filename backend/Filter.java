@@ -70,11 +70,10 @@ public class Filter {
 		}
 
 		// start filtering in the current command line directory
-		new Filter(Path.of("images"));
+		new Filter(Paths.get("images"));
 	}
 
 	/**
-	 * 
 	 * @param path target directory to use. can be {@link null}
 	 */
 	public Filter(Path path) {
@@ -133,7 +132,7 @@ public class Filter {
 		requestedToExit = false;
 		goBack = false;
 
-		frame.addWindowFocusListener(getFocusListener(device));
+//		frame.addWindowFocusListener(getFocusListener(device));
 		frame.addMouseMotionListener(getMouseListener(nullCursor));
 
 		index = 0;

@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -58,7 +59,7 @@ public class Analyse {
 
 	// for testing
 	public static void main(String[] args) {
-		new Analyse(Path.of("images"));
+		new Analyse(Paths.get("images"));
 	}
 
 	public Analyse(Path path) {
@@ -76,8 +77,8 @@ public class Analyse {
 		cluster = clusters.getNext();
 		clusterData = clusters.getClusterData();
 
-		// tighten up default vertical gap for displayed Components
-		DEFAULT_LAYOUT.setVgap(0);
+		// determine banner gap to top by OS
+		DEFAULT_LAYOUT.setVgap(System.getProperty("os.name").toLowerCase().contains("windows") ? 0 : 24);
 
 		// graphical awt/swing environment
 		setupEnvironment();
@@ -178,7 +179,7 @@ public class Analyse {
 		frame.addMouseMotionListener(getMouseListener());
 
 		// set up behaviour on loss of window focus
-		frame.addWindowFocusListener(getFocusListener(device));
+//		frame.addWindowFocusListener(getFocusListener(device));
 
 		device.setFullScreenWindow(frame);
 	}
@@ -267,18 +268,18 @@ public class Analyse {
 
 		private void setupInputMap() {
 			// regular single keystrokes
-			this.getInputMap().put(KeyStroke.getKeyStroke(ESCAPE, 0), ESCAPE);
-			this.getInputMap().put(KeyStroke.getKeyStroke(NEXT, 0), NEXT);
-			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), NEXT);
-			this.getInputMap().put(KeyStroke.getKeyStroke(PREVIOUS, 0), PREVIOUS);
-			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0), PREVIOUS);
-			this.getInputMap().put(KeyStroke.getKeyStroke(GO_TO_CLUSTER, 0), GO_TO_CLUSTER);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(ESCAPE, 0), ESCAPE);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(NEXT, 0), NEXT);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), NEXT);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(PREVIOUS, 0), PREVIOUS);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0), PREVIOUS);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(GO_TO_CLUSTER, 0), GO_TO_CLUSTER);
 
 			// keystrokes with shift key
-			this.getInputMap().put(KeyStroke.getKeyStroke(NEXT, KeyEvent.SHIFT_DOWN_MASK), NEXT_CLUSTER);
-			this.getInputMap().put(KeyStroke.getKeyStroke(PREVIOUS, KeyEvent.SHIFT_DOWN_MASK), PREVIOUS_CLUSTER);
-			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, KeyEvent.SHIFT_DOWN_MASK), NEXT_CLUSTER);
-			this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, KeyEvent.SHIFT_DOWN_MASK), PREVIOUS_CLUSTER);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(NEXT, KeyEvent.SHIFT_DOWN_MASK), NEXT_CLUSTER);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(PREVIOUS, KeyEvent.SHIFT_DOWN_MASK), PREVIOUS_CLUSTER);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, KeyEvent.SHIFT_DOWN_MASK), NEXT_CLUSTER);
+			this.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, KeyEvent.SHIFT_DOWN_MASK), PREVIOUS_CLUSTER);
 		}
 
 		@SuppressWarnings("serial")
