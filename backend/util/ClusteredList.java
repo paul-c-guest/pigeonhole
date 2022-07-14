@@ -18,6 +18,7 @@ public class ClusteredList {
 	private List<List<ClusteredFile>> fileClusters;
 	private Integer position = null;
 	private final static long FIVE_MINUTES = 300;
+	private String firstNumber;
 
 	public ClusteredList(File[] input) {
 
@@ -25,7 +26,8 @@ public class ClusteredList {
 		Metadata data;
 		ExifIFD0Directory exif;
 		Date date;
-
+		firstNumber = "1";
+		
 		for (File file : input) {
 			try {
 				data = JpegMetadataReader.readMetadata(file);
@@ -103,6 +105,10 @@ public class ClusteredList {
 		return position + 1;
 	}
 	
+	public final int image() {
+		return Integer.parseInt(firstNumber);
+	}
+	
 	private int next() {
 		if (position == null) {
 			position = 0;
@@ -143,28 +149,17 @@ public class ClusteredList {
 
 	public String getClusterData() {
 		List<ClusteredFile> cluster = fileClusters.get(position);
-		String firstNumber = Tool.getNumberFromString(cluster.get(0).file.getName());
+		firstNumber = Tool.getNumberFromString(cluster.get(0).file.getName());
 		String lastNumber = Tool.getNumberFromString(cluster.get(cluster.size() - 1).file.getName()); 
 		String firstTime = Tool.processTime(cluster.get(0).time.toString());
 		String lastTime = Tool.processTime(cluster.get(cluster.size() - 1).time.toString());
 
-		// @formatter:off
-		StringBuilder sb = cluster.size() == 1 
-				? new StringBuilder("[ activity at " + firstTime + " ] [ image " + firstNumber + " ]")
-				: new StringBuilder()
-				.append("[ activity from ")
-				.append(firstTime)
-				.append(" to ")
-				.append(lastTime)
-				.append(" ] [ images ")
-				.append(firstNumber)
-				.append(" to ")
-				.append(lastNumber)
-				.append(" ]");
-		// @formatter:on
-		
-		sb.append(" [ session " + (position + 1) + " / " + fileClusters.size() + " ]");
+		StringBuilder sb = new StringBuilder("[ session " + (position + 1) + " / " + fileClusters.size() + " ] ");
 
+sb.append(cluster.size() == 1 
+				? "[ activity at " + firstTime + " ] [ image " + firstNumber + " ]"
+				: "[ activity from " + firstTime + " to " + lastTime + " ] [ images " + firstNumber + " to " + lastNumber + " ]");
+		
 		return sb.toString();
 	}
 	
@@ -180,6 +175,10 @@ public class ClusteredList {
 
 		public File getFile() {
 			return this.file;
+		}
+		
+		public String getFileNumber() {
+			return Tool.getNumberFromString(file.getName());
 		}
 
 		@Override

@@ -9,5 +9,9 @@ public class Tool {
 	public static String processTime(String time) {
 		return time.substring(11, 16);
 	}
+	
+	public static String zeroPadInt(int number) {
+		return String.format("%04d", number);
+	}
 
 }

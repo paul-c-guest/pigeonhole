@@ -153,7 +153,7 @@ public class Analyse {
 	}
 
 	private String getImageData() {
-		return "[ image " + (index + 1) + " / " + (cluster.size()) + " ] ";
+		return "[ image " + cluster.get(index).getFileNumber() + " (" + (index + 1) + "/" + (cluster.size()) + ") ] ";
 	}
 
 	private void setupEnvironment() {
