@@ -37,6 +37,8 @@ import javax.swing.border.LineBorder;
  * 
  */
 public class Filter {
+	
+	GraphicsDevice device;
 
 	private JFrame frame;
 	private boolean readyForNext;
@@ -108,7 +110,7 @@ public class Filter {
 
 	private void doMainRoutine() {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = env.getDefaultScreenDevice();
+		device = env.getDefaultScreenDevice();
 
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -206,22 +208,15 @@ public class Filter {
 			}
 			
 			if (requestedToExit) {
-				frame.setVisible(false);
+				device.setFullScreenWindow(null);
 				if (JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 					// break out of the loop to initiate disposal of the jframe
 					break;
 				} else {
 					requestedToExit = false;
-					frame.setVisible(true);
+					device.setFullScreenWindow(frame);
 				}
 			}
-
-//			if (requestedToExit && JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...",
-//					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-//				break;
-//			} else {
-//				requestedToExit = false;
-//			}
 
 			index++;
 		}

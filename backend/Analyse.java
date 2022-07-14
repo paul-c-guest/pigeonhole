@@ -37,6 +37,8 @@ import backend.util.Tool;
 
 public class Analyse {
 
+	GraphicsDevice device;
+
 	private static Path PATH;
 
 	private JFrame frame;
@@ -158,7 +160,7 @@ public class Analyse {
 
 	private void setupEnvironment() {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = env.getDefaultScreenDevice();
+		device = env.getDefaultScreenDevice();
 
 		SCREEN_WIDTH = device.getDisplayMode().getWidth();
 		SCREEN_HEIGHT = device.getDisplayMode().getHeight();
@@ -249,7 +251,8 @@ public class Analyse {
 		};
 	}
 
-	// a single object to instantiate and attach to main jframe, to handle keystrokes
+	// a single object to instantiate and attach to main jframe, to handle
+	// keystrokes
 	private class Bindings extends JPanel {
 
 		private static final long serialVersionUID = 1L;
@@ -288,12 +291,12 @@ public class Analyse {
 			this.getActionMap().put(ESCAPE, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
 //					System.out.println("> escape");
-					frame.setVisible(false);
+					device.setFullScreenWindow(null);
 					if (JOptionPane.showConfirmDialog(frame, "Exit the analysis window?", "Exit...",
 							JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 						frame.dispose();
 					} else {
-						frame.setVisible(true);
+						device.setFullScreenWindow(frame);
 					}
 				}
 			});
@@ -334,25 +337,25 @@ public class Analyse {
 
 			this.getActionMap().put(GO_TO_CLUSTER, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
-					frame.setVisible(false);
+					device.setFullScreenWindow(null);
 					String userInput = JOptionPane.showInputDialog(frame, "Go to session: ");
 					Integer number = null;
-					
+
 					try {
 						number = Integer.parseInt(Tool.getNumberFromString(userInput));
 						cluster = clusters.getClusterAtIndex(number);
 						clusterData = clusters.getClusterData();
 						index = -1;
 						showNext();
-						
+
 					} catch (NumberFormatException nfe) {
 						JOptionPane.showMessageDialog(frame, "Can't get to session number: " + userInput);
 					}
 
-					frame.setVisible(true);
+					device.setFullScreenWindow(frame);
 				}
 			});
-			
+
 		}
 	}
 }
