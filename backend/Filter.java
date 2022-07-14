@@ -204,14 +204,24 @@ public class Filter {
 					e.printStackTrace();
 				}
 			}
-
-			if (requestedToExit && JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...",
-					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-				// break out of the loop to initiate disposal of the jframe
-				break;
-			} else {
-				requestedToExit = false;
+			
+			if (requestedToExit) {
+				frame.setVisible(false);
+				if (JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+					// break out of the loop to initiate disposal of the jframe
+					break;
+				} else {
+					requestedToExit = false;
+					frame.setVisible(true);
+				}
 			}
+
+//			if (requestedToExit && JOptionPane.showConfirmDialog(frame, "Exit the filtering tool?", "Exit...",
+//					JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+//				break;
+//			} else {
+//				requestedToExit = false;
+//			}
 
 			index++;
 		}

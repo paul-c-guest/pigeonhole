@@ -288,11 +288,13 @@ public class Analyse {
 			this.getActionMap().put(ESCAPE, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
 //					System.out.println("> escape");
+					frame.setVisible(false);
 					if (JOptionPane.showConfirmDialog(frame, "Exit the analysis window?", "Exit...",
 							JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-						frame.setVisible(false);
 						frame.dispose();
-					} // else do nothing
+					} else {
+						frame.setVisible(true);
+					}
 				}
 			});
 
@@ -332,6 +334,7 @@ public class Analyse {
 
 			this.getActionMap().put(GO_TO_CLUSTER, new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
+					frame.setVisible(false);
 					String userInput = JOptionPane.showInputDialog(frame, "Go to session: ");
 					Integer number = null;
 					
@@ -345,6 +348,8 @@ public class Analyse {
 					} catch (NumberFormatException nfe) {
 						JOptionPane.showMessageDialog(frame, "Can't get to session number: " + userInput);
 					}
+
+					frame.setVisible(true);
 				}
 			});
 			
